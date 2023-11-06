@@ -25,8 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     vim \
     wget \ 
-    zip && \
-    apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    zip
 
 # Install packages inside the new environment
 RUN pip install --upgrade --no-cache-dir pip setuptools wheel && \
@@ -57,3 +56,12 @@ RUN pip install --upgrade --no-cache-dir torch\
     torchserve --extra-index-url https://download.pytorch.org/whl/cu118 && \
     pip install --upgrade --no-cache-dir lightning && \
     pip cache purge
+
+# Install oases - software for underwater acoustic channel modeling
+RUN wget -O oases.tar.gz "https://drive.google.com/uc?export=download&id=1eMH4ENfUVcI9y2mvxyBDN5ed_GPGNUqL" && \
+    tar -zxvf oases.tar.gz && \
+    cd oases && \
+    sh root_install.sh && \
+    cd .. && \
+    rm oases.tar.gz && \
+    rm -rf ./oases
